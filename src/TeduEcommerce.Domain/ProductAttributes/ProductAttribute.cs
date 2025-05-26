@@ -3,10 +3,10 @@ using Volo.Abp.Domain.Entities.Auditing;
 
 namespace TeduEcommerce.Attributes;
 
-public class Attribute : CreationAuditedAggregateRoot<Guid>
+public class ProductAttribute : CreationAuditedAggregateRoot<Guid>
 {
     public string Code { get; set; } = default!;
-    public AttributeType DataType { get; set; }
+    public ProductAttributeType DataType { get; set; }
     public string Label { get; set; } = default!;
     public int SortOrder { get; set; }
     public bool Visibility { get; set; }

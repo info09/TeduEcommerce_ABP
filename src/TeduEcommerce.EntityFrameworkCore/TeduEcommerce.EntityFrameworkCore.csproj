@@ -35,4 +35,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="EntityFrameworkCore\Configurations\Manufacturers\" />
+    <Folder Include="EntityFrameworkCore\Configurations\Promotions\" />
+  </ItemGroup>
+
 </Project>

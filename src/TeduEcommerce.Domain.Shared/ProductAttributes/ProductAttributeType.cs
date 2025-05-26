@@ -2,7 +2,7 @@ using System;
 
 namespace TeduEcommerce.Attributes;
 
-public enum AttributeType
+public enum ProductAttributeType
 {
     Date,
     Varchar,
