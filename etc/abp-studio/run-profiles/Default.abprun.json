@@ -1,0 +1,25 @@
+﻿{
+  "applications": {
+    "TeduEcommerce.HttpApi.Host": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44377",
+      "path": "../../../src/TeduEcommerce.HttpApi.Host/TeduEcommerce.HttpApi.Host.csproj",
+      "kubernetesService": ".*-httpapihost$",
+      "healthCheckEndpoint": "/health-status",
+      "healthUiEndpoint": "/health-ui",
+      "execution": {
+        "order": 4
+      }
+    },
+    "TeduEcommerce.Angular": {
+      "type": "cli",
+      "workingDirectory": "../../../angular",
+      "startCommand": "./start.ps1",
+      "launchUrl": "http://localhost:4200",
+      "kubernetesService": ".*-angular$",
+      "execution": {
+        "order": 2
+      }    
+    }
+  }
+}
