@@ -11,6 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 export class ProductDetailComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
+  btnDisabled = false;
 
   public form: FormGroup;
 
@@ -26,6 +27,21 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private productCategoriesService: ProductCategoriesService,
     private fb: FormBuilder
   ) {}
+
+  validationMessages = {
+    code: [{ type: 'required', message: 'Bạn phải nhập mã duy nhất' }],
+    name: [
+      { type: 'required', message: 'Bạn phải nhập tên' },
+      { type: 'maxlength', message: 'Bạn không được nhập quá 255 kí tự' },
+    ],
+    slug: [{ type: 'required', message: 'Bạn phải URL duy nhất' }],
+    sku: [{ type: 'required', message: 'Bạn phải mã SKU sản phẩm' }],
+    manufacturerId: [{ type: 'required', message: 'Bạn phải chọn nhà cung cấp' }],
+    categoryId: [{ type: 'required', message: 'Bạn phải chọn danh mục' }],
+    productType: [{ type: 'required', message: 'Bạn phải chọn loại sản phẩm' }],
+    sortOrder: [{ type: 'required', message: 'Bạn phải nhập thứ tự' }],
+    sellPrice: [{ type: 'required', message: 'Bạn phải nhập giá bán' }],
+  };
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
@@ -71,7 +87,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
 
   private buildForm() {
     this.form = this.fb.group({
-      name: new FormControl(this.selectedEntity.name || null, Validators.required),
+      name: new FormControl(
+        this.selectedEntity.name || null,
+        Validators.compose([Validators.required, Validators.maxLength(250)])
+      ),
       code: new FormControl(this.selectedEntity.code || null, Validators.required),
       slug: new FormControl(this.selectedEntity.slug || null, Validators.required),
       sku: new FormControl(this.selectedEntity.sku || null, Validators.required),
@@ -83,12 +102,9 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       productType: new FormControl(this.selectedEntity.productType || null, Validators.required),
       sortOrder: new FormControl(this.selectedEntity.sortOrder || null, Validators.required),
       sellPrice: new FormControl(this.selectedEntity.sellPrice || null, Validators.required),
-      visibility: new FormControl(this.selectedEntity.visibility || null, Validators.required),
-      isActive: new FormControl(this.selectedEntity.isActive || null, Validators.required),
-      seoMetaDescription: new FormControl(
-        this.selectedEntity.seoMetaDescription || null,
-        Validators.required
-      ),
+      visibility: new FormControl(this.selectedEntity.visibility || true),
+      isActive: new FormControl(this.selectedEntity.isActive || true),
+      seoMetaDescription: new FormControl(this.selectedEntity.seoMetaDescription || null),
       description: new FormControl(this.selectedEntity.description || null),
     });
   }
