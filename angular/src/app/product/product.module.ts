@@ -10,9 +10,11 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { ProductDetailComponent } from './product-detail.component';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 
 @NgModule({
-  declarations: [ProductComponent],
+  declarations: [ProductComponent, ProductDetailComponent],
   imports: [
     SharedModule,
     ProductRoutingModule,
@@ -24,6 +26,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputTextModule,
     DropdownModule,
     ProgressSpinnerModule,
+    DynamicDialogModule,
   ],
 })
 export class ProductModule {}
