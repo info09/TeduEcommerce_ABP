@@ -8,6 +8,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { BlockUIModule } from 'primeng/blockui';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { DropdownModule } from 'primeng/dropdown';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -20,6 +22,8 @@ import { InputTextModule } from 'primeng/inputtext';
     BlockUIModule,
     ButtonModule,
     InputTextModule,
+    DropdownModule,
+    ProgressSpinnerModule,
   ],
 })
 export class ProductModule {}
