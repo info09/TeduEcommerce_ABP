@@ -1,7 +1,6 @@
 ﻿using System;
-using TeduEcommerce.Products;
 
-namespace TeduEcommerce.ProductCategories;
+namespace TeduEcommerce.Products;
 
 public class CreateUpdateProductDto
 {
