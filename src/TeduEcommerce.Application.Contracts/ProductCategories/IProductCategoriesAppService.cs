@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using TeduEcommerce.Products;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 

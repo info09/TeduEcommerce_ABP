@@ -6,6 +6,8 @@ import { PanelModule } from 'primeng/panel';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
 import { BlockUIModule } from 'primeng/blockui';
+import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [ProductComponent],
@@ -16,6 +18,8 @@ import { BlockUIModule } from 'primeng/blockui';
     TableModule,
     PaginatorModule,
     BlockUIModule,
+    ButtonModule,
+    InputTextModule,
   ],
 })
 export class ProductModule {}

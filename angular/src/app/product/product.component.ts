@@ -1,5 +1,6 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
 import { ProductInListDto, ProductsService } from '@proxy/products';
 import { Subject, takeUntil } from 'rxjs';
 
@@ -17,7 +18,15 @@ export class ProductComponent implements OnInit, OnDestroy {
   public maxResultCount: number = 10;
   public totalCount: number;
 
-  constructor(private productService: ProductsService) {}
+  //Filter
+  productCategories: any[] = [];
+  keyword: string = '';
+  categoryId: string = '';
+
+  constructor(
+    private productService: ProductsService,
+    private productCategoriesService: ProductCategoriesService
+  ) {}
 
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
@@ -30,7 +39,8 @@ export class ProductComponent implements OnInit, OnDestroy {
   loadData() {
     this.productService
       .getListFilter({
-        keyword: '',
+        keyword: this.keyword,
+        categoryId: this.categoryId,
         skipCount: this.skipCount,
         maxResultCount: this.maxResultCount,
       })
@@ -39,6 +49,23 @@ export class ProductComponent implements OnInit, OnDestroy {
         next: (res: PagedResultDto<ProductInListDto>) => {
           this.items = res.items;
           this.totalCount = res.totalCount;
+        },
+        error: () => {},
+      });
+  }
+
+  loadProductCategories() {
+    this.productCategoriesService
+      .getListAll()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (res: ProductCategoryInListDto[]) => {
+          res.forEach(item => {
+            this.productCategories.push({
+              name: item.name,
+              value: item.id,
+            });
+          });
         },
         error: () => {},
       });
