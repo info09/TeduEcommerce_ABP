@@ -12,17 +12,31 @@ namespace TeduEcommerce.ProductCategories
                                                                 ProductCategoryDto, 
                                                                 Guid, 
                                                                 PagedResultRequestDto, 
-                                                                CreateUpdateProductCategoryDto, 
+                                                                CreateUpdateProductCategoryDto,
                                                                 CreateUpdateProductCategoryDto>, IProductCategoriesAppService
     {
         public ProductCategoriesAppService(IRepository<ProductCategory, Guid> repository) : base(repository)
         {       
         }
 
+        public async Task DeleteMultiple(IEnumerable<Guid> ids)
+        {
+            await Repository.DeleteManyAsync(ids);
+            await UnitOfWorkManager.Current!.SaveChangesAsync(); // Ensure changes are saved
+        }
+
+        public async Task<List<ProductCategoryInListDto>> GetListAllAsync()
+        {
+            var query = await Repository.GetQueryableAsync();
+            query = query.Where(i => i.IsActive);
+            var data = await AsyncExecuter.ToListAsync(query);
+            return ObjectMapper.Map<List<ProductCategory>, List<ProductCategoryInListDto>>(data);
+        }
+
         public async Task<PagedResultDto<ProductCategoryInListDto>> GetListFilterAsync(BaseListFilterDto input)
         {
             var query = await Repository.GetQueryableAsync();
-            query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Name.Contains(input.Keyword));
+            query = query.WhereIf(!string.IsNullOrWhiteSpace(input.Keyword), x => x.Name.Contains(input.Keyword!));
 
             var totalCount = await AsyncExecuter.LongCountAsync(query);
             var data = await AsyncExecuter.ToListAsync(query.Skip(input.SkipCount).Take(input.MaxResultCount));
