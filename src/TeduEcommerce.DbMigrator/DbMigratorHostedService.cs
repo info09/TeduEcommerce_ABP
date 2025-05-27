@@ -3,10 +3,12 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using TeduEcommerce.Data;
 using Serilog;
+using TeduEcommerce.Data;
+using TeduEcommerce.Seeding;
 using Volo.Abp;
 using Volo.Abp.Data;
+using Volo.Abp.Uow;
 
 namespace TeduEcommerce.DbMigrator;
 
@@ -25,10 +27,10 @@ public class DbMigratorHostedService : IHostedService
     {
         using (var application = await AbpApplicationFactory.CreateAsync<TeduEcommerceDbMigratorModule>(options =>
         {
-           options.Services.ReplaceConfiguration(_configuration);
-           options.UseAutofac();
-           options.Services.AddLogging(c => c.AddSerilog());
-           options.AddDataMigrationEnvironment();
+            options.Services.ReplaceConfiguration(_configuration);
+            options.UseAutofac();
+            options.Services.AddLogging(c => c.AddSerilog());
+            options.AddDataMigrationEnvironment();
         }))
         {
             await application.InitializeAsync();
@@ -37,6 +39,17 @@ public class DbMigratorHostedService : IHostedService
                 .ServiceProvider
                 .GetRequiredService<TeduEcommerceDbMigrationService>()
                 .MigrateAsync();
+
+            var unitOfWorkManager = application.ServiceProvider.GetRequiredService<IUnitOfWorkManager>();
+            using (var uow = unitOfWorkManager.Begin(requiresNew: true))
+            {
+                await application
+                    .ServiceProvider
+                    .GetRequiredService<IdentityDataSeeder>()
+                    .SeedAsync("admin@gmail.com", "Abc@123$");
+
+                await uow.CompleteAsync();
+            }
 
             await application.ShutdownAsync();
 
