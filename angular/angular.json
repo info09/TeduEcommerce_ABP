@@ -28,15 +28,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "allowedCommonJsDependencies": ["chart.js", "js-sha256"],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "web.config",
-                "input": ".",
-                "output": "."
-              }
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               {
                 "input": "node_modules/@fortawesome/fontawesome-free/css/all.min.css",
@@ -89,16 +81,6 @@
                 "bundleName": "bootstrap-dim.rtl"
               },
               {
-                "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/font-bundle.css",
-                "inject": false,
-                "bundleName": "font-bundle"
-              },
-              {
-                "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/font-bundle.rtl.css",
-                "inject": false,
-                "bundleName": "font-bundle.rtl"
-              },
-              {
                 "input": "node_modules/@volo/ngx-lepton-x.lite/assets/css/ng-bundle.rtl.css",
                 "inject": false,
                 "bundleName": "ng-bundle.rtl"
@@ -113,11 +95,7 @@
                 "inject": false,
                 "bundleName": "abp-bundle.rtl"
               },
-              {
-                "input": "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-                "inject": true,
-                "bundleName": "bootstrap-icons"
-              },
+              "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/styles.scss"
             ],
             "scripts": []
@@ -133,7 +111,7 @@
                 {
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
-                  "maximumError": "100kb"
+                  "maximumError": "4kb"
                 }
               ],
               "fileReplacements": [
@@ -159,10 +137,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "TeduEcommerce:build:production"
+              "browserTarget": "TeduEcommerce:build:production"
             },
             "development": {
-              "buildTarget": "TeduEcommerce:build:development"
+              "browserTarget": "TeduEcommerce:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -170,7 +148,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "TeduEcommerce:build"
+            "browserTarget": "TeduEcommerce:build"
           }
         },
         "test": {
@@ -194,5 +172,6 @@
         }
       }
     }
-  }
+  },
+  "defaultProject": "TeduEcommerce"
 }
