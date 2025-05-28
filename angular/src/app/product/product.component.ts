@@ -7,6 +7,7 @@ import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../shared/services/notification.service';
 import { ProductDetailComponent } from './product-detail.component';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-product',
@@ -32,7 +33,8 @@ export class ProductComponent implements OnInit, OnDestroy {
     private productService: ProductsService,
     private productCategoriesService: ProductCategoriesService,
     private dialogService: DialogService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private confirmationService: ConfirmationService
   ) {}
 
   ngOnDestroy(): void {
@@ -123,6 +125,44 @@ export class ProductComponent implements OnInit, OnDestroy {
         this.selectedItems = [];
       }
     });
+  }
+
+  deleteItems() {
+    if (this.selectedItems.length == 0) {
+      this.notificationService.showError('Bạn phải chọn ít nhất một sản phẩm để xóa');
+      return;
+    }
+    var ids = [];
+    this.selectedItems.forEach(item => {
+      ids.push(item.id);
+    });
+    this.confirmationService.confirm({
+      message: 'Bạn có chắc chắn muốn xóa các sản phẩm đã chọn?',
+      header: 'Xác nhận xóa',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.deleteItemsConfirm(ids);
+      },
+    });
+  }
+
+  deleteItemsConfirm(ids: string[]) {
+    this.toggleBlockUI(true);
+    this.productService
+      .deleteMultipleByIds(ids)
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: () => {
+          this.toggleBlockUI(false);
+          this.notificationService.showSuccess('Xóa sản phẩm thành công');
+          this.loadData();
+          this.selectedItems = [];
+        },
+        error: () => {
+          this.toggleBlockUI(false);
+          this.notificationService.showError('Xóa sản phẩm không thành công');
+        },
+      });
   }
 
   getProductTypeName(value: number) {
