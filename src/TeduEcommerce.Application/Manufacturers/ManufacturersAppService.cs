@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace TeduEcommerce.Manufacturers;
 
+[Authorize]
 public class ManufacturersAppService : CrudAppService<Manufacturer, ManufacturerDto, Guid, PagedResultRequestDto, CreateUpdateManufactureDto, CreateUpdateManufactureDto>, IManufacturersAppService
 {
     public ManufacturersAppService(IRepository<Manufacturer, Guid> repository) : base(repository)
