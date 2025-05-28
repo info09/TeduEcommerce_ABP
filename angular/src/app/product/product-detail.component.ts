@@ -5,7 +5,7 @@ import { ProductDto, ProductsService, productTypeOptions } from '@proxy/products
 import { forkJoin, Subject, takeUntil } from 'rxjs';
 import { UtilityService } from '../shared/services/utility.service';
 import { ManufacturerInListDto, ManufacturersService } from '@proxy/manufacturers';
-import { DynamicDialogConfig } from 'primeng/dynamicdialog';
+import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'app-product-detail',
@@ -31,7 +31,8 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     private manufacturersService: ManufacturersService,
     private fb: FormBuilder,
     private utilityService: UtilityService,
-    private config: DynamicDialogConfig
+    private config: DynamicDialogConfig,
+    private ref: DynamicDialogRef
   ) {}
 
   validationMessages = {
@@ -56,7 +57,10 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.buildForm();
     this.loadProductTypes();
+    this.initFormData();
+  }
 
+  initFormData() {
     var productCategories = this.productCategoriesService.getListAll();
     var manufacturers = this.manufacturersService.getListAll();
     this.toggleBlockUI(true);
@@ -150,6 +154,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
       sortOrder: new FormControl(this.selectedEntity.sortOrder || null, Validators.required),
       sellPrice: new FormControl(this.selectedEntity.sellPrice || null, Validators.required),
       visibility: new FormControl(this.selectedEntity.visibility || true),
+      thumbnailPicture: new FormControl(this.selectedEntity.thumbnailPicture || ''),
       isActive: new FormControl(this.selectedEntity.isActive || true),
       seoMetaDescription: new FormControl(this.selectedEntity.seoMetaDescription || null),
       description: new FormControl(this.selectedEntity.description || null),
@@ -165,7 +170,40 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveChange() {}
+  saveChange() {
+    this.toggleBlockUI(true);
+    if (this.utilityService.isEmpty(this.config.data?.id) == true) {
+      this.productsService
+        .create(this.form.value)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe({
+          next: () => {
+            this.toggleBlockUI(false);
+            this.btnDisabled = false;
+            this.ref.close(this.form.value);
+          },
+          error: err => {
+            this.toggleBlockUI(false);
+            console.error('Error creating product:', err);
+          },
+        });
+    } else {
+      this.productsService
+        .update(this.config.data?.id, this.form.value)
+        .pipe(takeUntil(this.ngUnsubscribe))
+        .subscribe({
+          next: () => {
+            this.toggleBlockUI(false);
+            this.btnDisabled = false;
+            this.ref.close(this.form.value);
+          },
+          error: err => {
+            this.toggleBlockUI(false);
+            console.error('Error updating product:', err);
+          },
+        });
+    }
+  }
 
   private toggleBlockUI(enabled: boolean) {
     if (enabled == true) {

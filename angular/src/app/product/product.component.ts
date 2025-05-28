@@ -16,6 +16,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
   items: ProductInListDto[] = [];
+  selectedItems: ProductInListDto[] = [];
 
   // Paging variable
   public skipCount: number = 0;
@@ -96,6 +97,30 @@ export class ProductComponent implements OnInit, OnDestroy {
       if (data) {
         this.loadData();
         this.notificationService.showSuccess('Thêm mới sản phẩm thành công');
+        this.selectedItems = [];
+      }
+    });
+  }
+
+  showEditModal() {
+    if (this.selectedItems.length == 0) {
+      this.notificationService.showError('Bạn phải chọn ít nhất một sản phẩm để chỉnh sửa');
+      return;
+    }
+    const id = this.selectedItems[0].id;
+    const ref = this.dialogService.open(ProductDetailComponent, {
+      header: 'Chỉnh sửa sản phẩm',
+      width: '70%',
+      data: {
+        id: id,
+      },
+    });
+
+    ref.onClose.subscribe((data: ProductDto) => {
+      if (data) {
+        this.loadData();
+        this.notificationService.showSuccess('Chỉnh sửa sản phẩm thành công');
+        this.selectedItems = [];
       }
     });
   }
