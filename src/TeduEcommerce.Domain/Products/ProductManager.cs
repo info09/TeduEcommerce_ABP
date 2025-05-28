@@ -21,8 +21,7 @@ public class ProductManager : DomainService
         ProductType productType, string sKU,
         int sortOrder, bool visibility,
         bool isActive, Guid categoryId,
-        string seoMetaDescription, string description,
-        string thumbnailPicture, double sellPrice)
+        string seoMetaDescription, string description, double sellPrice)
     {
         if (await _productRepository.AnyAsync(x => x.Name == name))
         {
@@ -45,7 +44,7 @@ public class ProductManager : DomainService
 
         var product = new Product(Guid.NewGuid(), manufacturerId, name, code, slug, productType, sKU,
             sortOrder, visibility, isActive, categoryId,
-            seoMetaDescription, description, thumbnailPicture,
+            seoMetaDescription, description, null,
             sellPrice, category?.Name, category?.Slug);
 
         return product;

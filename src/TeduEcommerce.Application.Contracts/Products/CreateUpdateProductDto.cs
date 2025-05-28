@@ -17,5 +17,6 @@ public class CreateUpdateProductDto
     public Guid CategoryId { get; set; }
     public string SeoMetaDescription { get; set; } = default!;
     public string Description { get; set; } = default!;
-    public string ThumbnailPicture { get; set; } = default!;
+    public string ThumbnailPictureName { get; set; }
+    public string ThumbnailPictureContent { get; set; }
 }
