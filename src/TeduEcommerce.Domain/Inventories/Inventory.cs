@@ -6,6 +6,6 @@ namespace TeduEcommerce.Inventories;
 public class Inventory : AuditedAggregateRoot<Guid>
 {
     public Guid ProductId { get; set; }
-    public string SKU { get; set; } = default!;
+    public string? SKU { get; set; }
     public int StockQuantity { get; set; }
 }

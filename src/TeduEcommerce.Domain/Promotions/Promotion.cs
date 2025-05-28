@@ -5,8 +5,8 @@ namespace TeduEcommerce.Promotions;
 
 public class Promotion : AuditedAggregateRoot<Guid>
 {
-    public string Name { get; set; } = default!;
-    public string CouponCode { get; set; } = default!;
+    public string? Name { get; set; }
+    public string? CouponCode { get; set; }
     public bool RequireUseCouponCode { get; set; }
     public DateTime ValidDate { get; set; }
     public DateTime? ExpiredDate { get; set; }

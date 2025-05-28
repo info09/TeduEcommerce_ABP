@@ -30,5 +30,8 @@ public class ProductCategoryConfiguration : IEntityTypeConfiguration<ProductCate
 
         builder.Property(x => x.SeoMetaDescription)
          .HasMaxLength(250);
+
+        builder.Property(x => x.ExtraProperties).IsRequired(false);
+        builder.Property(x => x.ConcurrencyStamp).IsRequired(false);
     }
 }

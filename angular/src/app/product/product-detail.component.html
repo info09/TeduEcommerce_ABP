@@ -4,7 +4,14 @@
     <div class="formgrid grid">
       <div class="field col-12">
         <label for="name" class="block">Tên <span class="required">*</span></label>
-        <input id="name" pInputText type="text" class="w-full" formControlName="name" />
+        <input
+          id="name"
+          pInputText
+          type="text"
+          class="w-full"
+          formControlName="name"
+          (keyup)="generateSlug()"
+        />
         <app-validation-message
           [entityForm]="form"
           fieldName="name"

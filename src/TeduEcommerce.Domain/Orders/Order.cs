@@ -5,7 +5,7 @@ namespace TeduEcommerce.Orders;
 
 public class Order : FullAuditedAggregateRoot<Guid>
 {
-    public string Code { get; set; } = default!;
+    public string? Code { get; set; }
     public OrderStatus Status { get; set; }
     public PaymentMethod PaymentMethod { get; set; }
     public double ShippingFee { get; set; }
@@ -14,9 +14,9 @@ public class Order : FullAuditedAggregateRoot<Guid>
     public double Subtotal { get; set; }
     public double Discount { get; set; }
     public double GrandTotal { get; set; }
-    public string CustomerName { get; set; } = default!;
-    public string CustomerPhoneNumber { get; set; } = default!;
-    public string CustomerAddress { get; set; } = default!;
-    public string CustomerEmail { get; set; } = default!;
+    public string? CustomerName { get; set; }
+    public string? CustomerPhoneNumber { get; set; }
+    public string? CustomerAddress { get; set; }
+    public string? CustomerEmail { get; set; }
     public Guid? CustomerUserId { get; set; }
 }

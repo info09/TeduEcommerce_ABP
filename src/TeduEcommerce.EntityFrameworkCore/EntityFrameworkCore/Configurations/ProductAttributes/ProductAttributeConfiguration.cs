@@ -1,7 +1,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using TeduEcommerce.Attributes;
+using TeduEcommerce.ProductAttributes;
 
 namespace TeduEcommerce.EntityFrameworkCore.Configurations.ProductAttributes;
 
@@ -19,5 +19,8 @@ public class ProductAttributeConfiguration : IEntityTypeConfiguration<ProductAtt
         builder.Property(x => x.Label)
             .HasMaxLength(50)
             .IsRequired();
+
+        builder.Property(x => x.ExtraProperties).IsRequired(false);
+        builder.Property(x => x.ConcurrencyStamp).IsRequired(false);
     }
 }

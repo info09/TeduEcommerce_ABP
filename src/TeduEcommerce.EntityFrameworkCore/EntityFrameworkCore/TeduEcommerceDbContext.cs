@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using TeduEcommerce.Attributes;
 using TeduEcommerce.EntityFrameworkCore.Configurations.Inventories;
 using TeduEcommerce.EntityFrameworkCore.Configurations.InventoryTickets;
 using TeduEcommerce.EntityFrameworkCore.Configurations.Manufacturers;
@@ -12,6 +11,7 @@ using TeduEcommerce.Inventories;
 using TeduEcommerce.InventoryTickets;
 using TeduEcommerce.Manufacturers;
 using TeduEcommerce.Orders;
+using TeduEcommerce.ProductAttributes;
 using TeduEcommerce.ProductCategories;
 using TeduEcommerce.Products;
 using TeduEcommerce.Promotions;

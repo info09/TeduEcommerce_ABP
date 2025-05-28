@@ -28,5 +28,7 @@ public class ManufacturerConfiguration : IEntityTypeConfiguration<Manufacturer>
         builder.Property(x => x.CoverPicture)
            .HasMaxLength(250);
 
+        builder.Property(x => x.ExtraProperties).IsRequired(false);
+        builder.Property(x => x.ConcurrencyStamp).IsRequired(false);
     }
 }

@@ -5,11 +5,11 @@ namespace TeduEcommerce.Manufacturers;
 
 public class Manufacturer : CreationAuditedAggregateRoot<Guid>
 {
-    public string Name { get; set; } = default!;
-    public string Code { get; set; } = default!;
-    public string Slug { get; set; } = default!;
-    public string CoverPicture { get; set; } = default!;
+    public string? Name { get; set; }
+    public string? Code { get; set; }
+    public string? Slug { get; set; }
+    public string? CoverPicture { get; set; }
     public bool Visibility { get; set; }
     public bool IsActive { get; set; }
-    public string Country { get; set; } = default!;
+    public string? Country { get; set; }
 }

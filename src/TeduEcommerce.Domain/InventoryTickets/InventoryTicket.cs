@@ -5,7 +5,7 @@ namespace TeduEcommerce.InventoryTickets;
 
 public class InventoryTicket : AuditedAggregateRoot<Guid>
 {
-    public string Code { get; set; } = default!;
+    public string? Code { get; set; }
     public TicketType TicketType { get; set; }
     public bool IsApproved { get; set; }
     public Guid? ApprovedId { get; set; }

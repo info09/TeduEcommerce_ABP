@@ -40,6 +40,7 @@ export class ProductComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.loadData();
+    this.loadProductCategories();
   }
 
   loadData() {
@@ -73,7 +74,7 @@ export class ProductComponent implements OnInit, OnDestroy {
         next: (res: ProductCategoryInListDto[]) => {
           res.forEach(item => {
             this.productCategories.push({
-              name: item.name,
+              label: item.name,
               value: item.id,
             });
           });

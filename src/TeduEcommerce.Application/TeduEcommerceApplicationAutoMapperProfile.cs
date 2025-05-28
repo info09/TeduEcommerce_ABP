@@ -1,4 +1,5 @@
 using AutoMapper;
+using TeduEcommerce.Manufacturers;
 using TeduEcommerce.ProductCategories;
 using TeduEcommerce.Products;
 
@@ -13,13 +14,18 @@ public class TeduEcommerceApplicationAutoMapperProfile : Profile
          * into multiple profile classes for a better organization. */
         
         //Product Category
-        CreateMap<ProductCategory, ProductDto>();
-        CreateMap<ProductCategory, ProductInListDto>();
+        CreateMap<ProductCategory, ProductCategoryDto>();
+        CreateMap<ProductCategory, ProductCategoryInListDto>();
         CreateMap<CreateUpdateProductDto, ProductCategory>();
 
         //Product
         CreateMap<Product, ProductDto>();
         CreateMap<Product, ProductInListDto>();
         CreateMap<CreateUpdateProductDto, Product>();
+
+        //Manufacturer
+        CreateMap<Manufacturer, ManufacturerDto>();
+        CreateMap<Manufacturer, ManufacturerInListDto>();
+        CreateMap<CreateUpdateManufactureDto, Manufacturer>();
     }
 }
