@@ -23,4 +23,4 @@ public class ProductDto : IEntityDto<Guid>
     public Guid Id { get; set; }
     public string CategoryName { get; set; }
     public string CategorySlug { get; set; }
-}
+} 

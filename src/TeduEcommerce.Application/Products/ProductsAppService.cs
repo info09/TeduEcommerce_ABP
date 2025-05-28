@@ -45,7 +45,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         query = query.WhereIf(input.CategoryId.HasValue, x => x.CategoryId == input.CategoryId!.Value);
 
         var totalCount = await AsyncExecuter.LongCountAsync(query);
-        var data = await AsyncExecuter.ToListAsync(query.Skip(input.SkipCount).Take(input.MaxResultCount));
+        var data = await AsyncExecuter.ToListAsync(query.OrderByDescending(i => i.CreationTime).Skip(input.SkipCount).Take(input.MaxResultCount));
         return new PagedResultDto<ProductInListDto>(totalCount, ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data));
     }
 
@@ -109,6 +109,20 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         var regex = new Regex(@"^[\w/\:.-]+;base64,");
         base64 = regex.Replace(base64, string.Empty);
         var bytes = Convert.FromBase64String(base64);
-        await _fileContainer.SaveAsync(fileName, bytes);
+        await _fileContainer.SaveAsync(fileName, bytes, overrideExisting: true);
+    }
+
+    public async Task<string?> GetThumbnailImageAsync(string fileName)
+    {
+        if (string.IsNullOrEmpty(fileName))
+            return null;
+
+        var thumbnailContent = await _fileContainer.GetAllBytesAsync(fileName);
+        if (thumbnailContent is null)
+        {
+            return null;
+        }
+        var result = Convert.ToBase64String(thumbnailContent);
+        return result;
     }
 }
