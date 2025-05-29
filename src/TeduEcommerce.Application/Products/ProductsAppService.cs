@@ -18,12 +18,14 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
     private readonly ProductManager _productManager;
     private readonly IRepository<ProductCategory, Guid> _productCategoryRepository;
     private readonly IBlobContainer<ProductThumbnailPictureContainer> _fileContainer;
+    private readonly ProductCodeGenerator _productCodeGenerator;
 
-    public ProductsAppService(IRepository<Product, Guid> repository, ProductManager productManager, IRepository<ProductCategory, Guid> productCategoryRepository, IBlobContainer<ProductThumbnailPictureContainer> fileContainer) : base(repository)
+    public ProductsAppService(IRepository<Product, Guid> repository, ProductManager productManager, IRepository<ProductCategory, Guid> productCategoryRepository, IBlobContainer<ProductThumbnailPictureContainer> fileContainer, ProductCodeGenerator productCodeGenerator) : base(repository)
     {
         _productManager = productManager;
         _productCategoryRepository = productCategoryRepository;
         _fileContainer = fileContainer;
+        _productCodeGenerator = productCodeGenerator;
     }
 
     public async Task DeleteMultiple(IEnumerable<Guid> ids)
@@ -126,5 +128,10 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         }
         var result = Convert.ToBase64String(thumbnailContent);
         return result;
+    }
+
+    public async Task<string> GetSuggestNewCodeAsync()
+    {
+        return await _productCodeGenerator.GenerateCodeAsync();
     }
 }

@@ -102,6 +102,7 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
           });
           //Load edit data to form
           if (this.utilService.isEmpty(this.config.data?.id) == true) {
+            this.getNewSuggestionCode();
             this.toggleBlockUI(false);
           } else {
             this.loadFormDetails(this.config.data?.id);
@@ -226,6 +227,19 @@ export class ProductDetailComponent implements OnInit, OnDestroy {
         this.btnDisabled = false;
       }, 1000);
     }
+  }
+
+  getNewSuggestionCode() {
+    this.productService
+      .getSuggestNewCode()
+      .pipe(takeUntil(this.ngUnsubscribe))
+      .subscribe({
+        next: (response: string) => {
+          this.form.patchValue({
+            code: response,
+          });
+        },
+      });
   }
 
   onFileChange(event) {

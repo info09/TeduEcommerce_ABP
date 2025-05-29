@@ -12,4 +12,5 @@ public interface IProductsAppService : ICrudAppService<ProductDto, Guid, PagedRe
     Task<List<ProductInListDto>> GetListAllAsync();
     Task DeleteMultiple(IEnumerable<Guid> ids);
     Task<string?> GetThumbnailImageAsync(string fileName);
+    Task<string> GetSuggestNewCodeAsync();
 }
