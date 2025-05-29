@@ -7,6 +7,9 @@ using TeduEcommerce.Manufacturers;
 using TeduEcommerce.ProductAttributes;
 using TeduEcommerce.ProductCategories;
 using TeduEcommerce.Products;
+using TeduEcommerce.Roles;
+using TeduEcommerce.System.Roles;
+using Volo.Abp.Identity;
 
 namespace TeduEcommerce;
 
@@ -37,5 +40,20 @@ public class TeduEcommerceApplicationAutoMapperProfile : Profile
         CreateMap<ProductAttribute, ProductAttributeDto>();
         CreateMap<ProductAttribute, ProductAttributeInListDto>();
         CreateMap<CreateUpdateProductAttributeDto, ProductAttribute>();
+
+        //Roles
+        CreateMap<IdentityRole, RoleDto>().ForMember(x => x.Description,
+            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName)
+            ?
+            x.ExtraProperties[RoleConsts.DescriptionFieldName]
+            :
+            null));
+        CreateMap<IdentityRole, RoleInListDto>().ForMember(x => x.Description,
+            map => map.MapFrom(x => x.ExtraProperties.ContainsKey(RoleConsts.DescriptionFieldName)
+            ?
+            x.ExtraProperties[RoleConsts.DescriptionFieldName]
+            :
+            null));
+        CreateMap<CreateUpdateRoleDto, IdentityRole>();
     }
 }
