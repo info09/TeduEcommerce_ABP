@@ -19,9 +19,12 @@ import { EditorModule } from 'primeng/editor';
 import { TeduSharedModule } from '../shared/modules/tedu-shared.module';
 import { BadgeModule } from 'primeng/badge';
 import { ImageModule } from 'primeng/image';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { CalendarModule } from 'primeng/calendar';
+import { ProductAttributeComponent } from './product-attribute.component';
 
 @NgModule({
-  declarations: [ProductComponent, ProductDetailComponent],
+  declarations: [ProductComponent, ProductDetailComponent, ProductAttributeComponent],
   imports: [
     SharedModule,
     ProductRoutingModule,
@@ -41,6 +44,9 @@ import { ImageModule } from 'primeng/image';
     TeduSharedModule,
     BadgeModule,
     ImageModule,
+    ConfirmDialogModule,
+    CalendarModule,
   ],
+  entryComponents: [ProductDetailComponent, ProductAttributeComponent],
 })
 export class ProductModule {}

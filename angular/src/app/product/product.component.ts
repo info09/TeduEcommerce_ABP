@@ -8,6 +8,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from '../shared/services/notification.service';
 import { ProductDetailComponent } from './product-detail.component';
 import { ConfirmationService } from 'primeng/api';
+import { ProductAttributeComponent } from './product-attribute.component';
 
 @Component({
   selector: 'app-product',
@@ -163,6 +164,24 @@ export class ProductComponent implements OnInit, OnDestroy {
           this.notificationService.showError('Xóa sản phẩm không thành công');
         },
       });
+  }
+
+  manageProductAttribute(id: string) {
+    const ref = this.dialogService.open(ProductAttributeComponent, {
+      header: 'Quản lý thuộc tính sản phẩm',
+      width: '70%',
+      data: {
+        id: id,
+      },
+    });
+
+    ref.onClose.subscribe((data: ProductDto) => {
+      if (data) {
+        this.loadData();
+        this.notificationService.showSuccess('Cập nhật thuộc tính sản phẩm thành công');
+        this.selectedItems = [];
+      }
+    });
   }
 
   getProductTypeName(value: number) {

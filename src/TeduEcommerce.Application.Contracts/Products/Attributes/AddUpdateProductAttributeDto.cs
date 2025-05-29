@@ -10,7 +10,7 @@ public class AddUpdateProductAttributeDto
     public DateTime? DateTimeValue { get; set; }
     public decimal? DecimalValue { get; set; }
     public int? IntValue { get; set; }
-    public string VarcharValue { get; set; }
+    public string? VarcharValue { get; set; }
 
-    public string TextValue { get; set; }
+    public string? TextValue { get; set; }
 }
