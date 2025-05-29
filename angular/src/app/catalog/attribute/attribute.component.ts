@@ -1,15 +1,15 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  ProductAttributeInListDto,
-  ProductAttributesService,
-  ProductAttributeType,
-} from '@proxy/product-attributes';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { AttributeDetailComponent } from './attribute-detail.component';
-import { NotificationService } from '../shared/services/notification.service';
 import { ConfirmationService } from 'primeng/api';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import {
+  ProductAttributeInListDto,
+  ProductAttributesService,
+} from '@proxy/catalog/product-attributes';
+import { ProductAttributeType } from '@proxy/product-attributes';
 
 @Component({
   selector: 'app-attribute',

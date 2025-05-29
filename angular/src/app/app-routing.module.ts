@@ -10,24 +10,13 @@ const routes: Routes = [
     component: AppLayoutComponent,
   },
   {
-    path: 'product-category',
-    loadChildren: () =>
-      import('./product-category/product-category.module').then(m => m.ProductCategoryModule),
-    component: AppLayoutComponent,
-  },
-  {
-    path: 'product',
-    loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
+    path: 'catalog',
+    loadChildren: () => import('./catalog/catalog.module').then(m => m.CatalogModule),
     component: AppLayoutComponent,
   },
   {
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
-  },
-  {
-    path: 'attribute',
-    loadChildren: () => import('./attribute/attribute.module').then(m => m.AttributeModule),
-    component: AppLayoutComponent,
   },
   // {
   //   path: 'identity',

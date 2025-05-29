@@ -1,6 +1,5 @@
-import * as Manufacturers from './manufacturers';
+import * as Catalog from './catalog';
 import * as ProductAttributes from './product-attributes';
-import * as ProductCategories from './product-categories';
 import * as Products from './products';
 export * from './models';
-export { Manufacturers, ProductAttributes, ProductCategories, Products };
+export { Catalog, ProductAttributes, Products };

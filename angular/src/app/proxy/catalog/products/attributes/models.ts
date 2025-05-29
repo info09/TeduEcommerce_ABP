@@ -1,5 +1,5 @@
-import type { BaseListFilterDto } from '../../models';
-import type { ProductAttributeType } from '../../product-attributes/product-attribute-type.enum';
+import type { BaseListFilterDto } from '../../../models';
+import type { ProductAttributeType } from '../../../product-attributes/product-attribute-type.enum';
 
 export interface AddUpdateProductAttributeDto {
   productId?: string;

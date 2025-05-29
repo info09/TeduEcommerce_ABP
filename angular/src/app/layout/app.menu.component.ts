@@ -23,7 +23,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Danh sách loại sản phẩm',
             icon: 'pi pi-fw pi-circle',
-            routerLink: ['/product-category'],
+            routerLink: ['/catalog/product-category'],
           },
           {
             label: 'Danh sách nhà sản xuất',
@@ -38,9 +38,13 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Danh sách sản phẩm',
             icon: 'pi pi-fw pi-circle',
-            routerLink: ['/product'],
+            routerLink: ['/catalog/product'],
           },
-          { label: 'Danh sách thuộc tính', icon: 'pi pi-fw pi-circle', routerLink: ['/attribute'] },
+          {
+            label: 'Danh sách thuộc tính',
+            icon: 'pi pi-fw pi-circle',
+            routerLink: ['/catalog/attribute'],
+          },
         ],
       },
       {

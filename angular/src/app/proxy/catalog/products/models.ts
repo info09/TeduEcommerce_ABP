@@ -1,6 +1,6 @@
-import type { ProductType } from './product-type.enum';
+import type { ProductType } from '../../products/product-type.enum';
 import type { EntityDto } from '@abp/ng.core';
-import type { BaseListFilterDto } from '../models';
+import type { BaseListFilterDto } from '../../models';
 
 export interface CreateUpdateProductDto {
   manufacturerId?: string;

@@ -1,5 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ProductCategoriesService, ProductCategoryInListDto } from '@proxy/product-categories';
+import {
+  ProductCategoriesService,
+  ProductCategoryInListDto,
+} from '@proxy/catalog/product-categories';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
