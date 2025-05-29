@@ -1,0 +1,18 @@
+﻿using System;
+using TeduEcommerce.ProductAttributes;
+using Volo.Abp.Application.Dtos;
+
+namespace TeduEcommerce.Catalog.ProductAttributes;
+
+public class ProductAttributeInListDto : EntityDto<Guid>
+{
+    public string Code { get; set; }
+    public ProductAttributeType DataType { get; set; }
+    public string Label { get; set; }
+    public int SortOrder { get; set; }
+    public bool Visibility { get; set; }
+    public bool IsActive { get; set; }
+    public bool IsRequired { get; set; }
+    public bool IsUnique { get; set; }
+    public Guid Id { get; set; }
+}

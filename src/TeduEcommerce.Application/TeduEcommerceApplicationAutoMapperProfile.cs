@@ -1,4 +1,8 @@
 using AutoMapper;
+using TeduEcommerce.Catalog.Manufacturers;
+using TeduEcommerce.Catalog.ProductAttributes;
+using TeduEcommerce.Catalog.ProductCategories;
+using TeduEcommerce.Catalog.Products;
 using TeduEcommerce.Manufacturers;
 using TeduEcommerce.ProductAttributes;
 using TeduEcommerce.ProductCategories;
