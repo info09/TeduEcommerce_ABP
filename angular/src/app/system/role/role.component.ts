@@ -1,28 +1,23 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DialogService } from 'primeng/dynamicdialog';
+import { RoleInListDto, RolesService } from '@proxy/system/roles';
+import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { NotificationService } from '../../shared/services/notification.service';
-import { ProductDetailComponent } from './product-detail.component';
-import { ConfirmationService } from 'primeng/api';
-import { ProductAttributeComponent } from './product-attribute.component';
-import { ProductDto, ProductInListDto, ProductsService } from '@proxy/catalog/products';
-import {
-  ProductCategoriesService,
-  ProductCategoryInListDto,
-} from '@proxy/catalog/product-categories';
-import { ProductType } from '@proxy/products';
+import { NotificationService } from 'src/app/shared/services/notification.service';
+import { RoleDetailComponent } from './role-detail.component';
 import { MessageConstants } from 'src/app/shared/constants/messages.const';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
-  selector: 'app-product',
-  templateUrl: './product.component.html',
+  selector: 'app-role',
+  templateUrl: './role.component.html',
 })
-export class ProductComponent implements OnInit, OnDestroy {
+export class RoleComponent implements OnInit, OnDestroy {
+  // Component logic goes here
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
-  items: ProductInListDto[] = [];
-  selectedItems: ProductInListDto[] = [];
+  items: RoleInListDto[] = [];
+  selectedItems: RoleInListDto[] = [];
 
   // Paging variable
   public skipCount: number = 0;
@@ -33,78 +28,52 @@ export class ProductComponent implements OnInit, OnDestroy {
   productCategories: any[] = [];
   keyword: string = '';
   categoryId: string = '';
-
   constructor(
-    private productService: ProductsService,
-    private productCategoriesService: ProductCategoriesService,
-    private dialogService: DialogService,
+    private roleService: RolesService,
     private notificationService: NotificationService,
+    private dialogService: DialogService,
     private confirmationService: ConfirmationService
-  ) {}
-
+  ) {
+    // Initialization code if needed
+  }
   ngOnDestroy(): void {
     this.ngUnsubscribe.next();
     this.ngUnsubscribe.complete();
   }
   ngOnInit(): void {
     this.loadData();
-    this.loadProductCategories();
   }
 
   loadData() {
     this.toggleBlockUI(true);
-    this.productService
+    this.roleService
       .getListFilter({
         keyword: this.keyword,
-        categoryId: this.categoryId,
-        skipCount: this.skipCount,
         maxResultCount: this.maxResultCount,
+        skipCount: this.skipCount,
       })
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
-        next: (res: PagedResultDto<ProductInListDto>) => {
+        next: (res: PagedResultDto<RoleInListDto>) => {
           this.items = res.items;
           this.totalCount = res.totalCount;
           this.toggleBlockUI(false);
         },
-        error: () => {
-          this.toggleBlockUI(false);
-        },
-      });
-  }
-
-  loadProductCategories() {
-    this.toggleBlockUI(true);
-    this.productCategoriesService
-      .getListAll()
-      .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe({
-        next: (res: ProductCategoryInListDto[]) => {
-          res.forEach(item => {
-            this.productCategories.push({
-              label: item.name,
-              value: item.id,
-            });
-          });
-          this.toggleBlockUI(false);
-        },
-        error: () => {
+        error: err => {
           this.toggleBlockUI(false);
         },
       });
   }
 
   showAddModal() {
-    const ref = this.dialogService.open(ProductDetailComponent, {
-      header: 'Thêm mới sản phẩm',
+    const ref = this.dialogService.open(RoleDetailComponent, {
+      header: 'Thêm nhóm quyền',
       width: '70%',
     });
-
-    ref.onClose.subscribe((data: ProductDto) => {
-      if (data) {
+    ref.onClose.subscribe((result: RoleInListDto) => {
+      if (result) {
         this.loadData();
         this.notificationService.showSuccess(MessageConstants.CREATED_OK_MSG);
-        this.selectedItems = [];
       }
     });
   }
@@ -114,17 +83,15 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.notificationService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
       return;
     }
-    const id = this.selectedItems[0].id;
-    const ref = this.dialogService.open(ProductDetailComponent, {
-      header: 'Chỉnh sửa sản phẩm',
-      width: '70%',
-      data: {
-        id: id,
-      },
-    });
 
-    ref.onClose.subscribe((data: ProductDto) => {
-      if (data) {
+    var id = this.selectedItems[0].id;
+    const ref = this.dialogService.open(RoleDetailComponent, {
+      header: 'Chỉnh sửa nhóm quyền',
+      width: '70%',
+      data: { id: id },
+    });
+    ref.onClose.subscribe((result: RoleInListDto) => {
+      if (result) {
         this.loadData();
         this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
         this.selectedItems = [];
@@ -137,24 +104,27 @@ export class ProductComponent implements OnInit, OnDestroy {
       this.notificationService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
       return;
     }
+
     var ids = [];
     this.selectedItems.forEach(item => {
       ids.push(item.id);
     });
+
     this.confirmationService.confirm({
       message: MessageConstants.CONFIRM_DELETE_MSG,
-      header: 'Xác nhận xóa',
+      header: 'Xác nhận',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.deleteItemsConfirm(ids);
       },
+      reject: () => {},
     });
   }
 
   deleteItemsConfirm(ids: string[]) {
     this.toggleBlockUI(true);
-    this.productService
-      .deleteMultipleByIds(ids)
+    this.roleService
+      .deleteMultiple(ids)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: () => {
@@ -163,33 +133,10 @@ export class ProductComponent implements OnInit, OnDestroy {
           this.loadData();
           this.selectedItems = [];
         },
-        error: () => {
+        error: err => {
           this.toggleBlockUI(false);
-          this.notificationService.showError('Xóa sản phẩm không thành công');
         },
       });
-  }
-
-  manageProductAttribute(id: string) {
-    const ref = this.dialogService.open(ProductAttributeComponent, {
-      header: 'Quản lý thuộc tính sản phẩm',
-      width: '70%',
-      data: {
-        id: id,
-      },
-    });
-
-    ref.onClose.subscribe((data: ProductDto) => {
-      if (data) {
-        this.loadData();
-        this.notificationService.showSuccess('Cập nhật thuộc tính sản phẩm thành công');
-        this.selectedItems = [];
-      }
-    });
-  }
-
-  getProductTypeName(value: number) {
-    return ProductType[value];
   }
 
   pageChanged(event: any): void {

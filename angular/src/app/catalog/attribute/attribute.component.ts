@@ -10,6 +10,7 @@ import {
   ProductAttributesService,
 } from '@proxy/catalog/product-attributes';
 import { ProductAttributeType } from '@proxy/product-attributes';
+import { MessageConstants } from 'src/app/shared/constants/messages.const';
 
 @Component({
   selector: 'app-attribute',
@@ -79,7 +80,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe((result: ProductAttributeInListDto) => {
       if (result) {
         this.loadData();
-        this.notificationService.showSuccess('Thêm thuộc tính thành công');
+        this.notificationService.showSuccess(MessageConstants.CREATED_OK_MSG);
         this.selectedItems = [];
       }
     });
@@ -87,7 +88,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
 
   showEditModal() {
     if (this.selectedItems.length != 1) {
-      this.notificationService.showError('Bạn phải chọn một thuộc tính để sửa');
+      this.notificationService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
       return;
     }
     const ref = this.dialogService.open(AttributeDetailComponent, {
@@ -101,7 +102,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe((result: ProductAttributeInListDto) => {
       if (result) {
         this.loadData();
-        this.notificationService.showSuccess('Cập nhật thuộc tính thành công');
+        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
         this.selectedItems = [];
       }
     });
@@ -109,7 +110,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
 
   deleteItems() {
     if (this.selectedItems.length == 0) {
-      this.notificationService.showError('Bạn chưa chọn thuộc tính nào để xóa');
+      this.notificationService.showError(MessageConstants.NOT_CHOOSE_ANY_RECORD);
       return;
     }
 
@@ -119,7 +120,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
     });
 
     this.confirmationService.confirm({
-      message: 'Bạn có chắc chắn muốn xóa các thuộc tính đã chọn?',
+      message: MessageConstants.CONFIRM_DELETE_MSG,
       header: 'Xác nhận xóa',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -137,7 +138,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
         next: () => {
           this.toggleBlockUI(false);
           this.loadData();
-          this.notificationService.showSuccess('Xóa thuộc tính thành công');
+          this.notificationService.showSuccess(MessageConstants.DELETED_OK_MSG);
           this.selectedItems = [];
         },
         error: error => {

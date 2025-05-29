@@ -11,6 +11,7 @@ import {
 import { ProductsService } from '@proxy/catalog/products';
 import { ProductAttributeType } from '@proxy/product-attributes';
 import { ProductAttributeValueDto } from '@proxy/catalog/products/attributes';
+import { MessageConstants } from 'src/app/shared/constants/messages.const';
 
 @Component({
   selector: 'app-product-attribute',
@@ -140,7 +141,7 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
       id = attribute.varcharId;
     }
     this.confirmationService.confirm({
-      message: 'Bạn có chắc muốn xóa bản ghi này?',
+      message: MessageConstants.CONFIRM_DELETE_MSG,
       accept: () => {
         this.deleteItemsConfirmed(attribute, id);
       },
@@ -154,7 +155,7 @@ export class ProductAttributeComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({
         next: (response: any) => {
-          this.notificationService.showSuccess('Xóa thành công');
+          this.notificationService.showSuccess(MessageConstants.DELETED_OK_MSG);
           this.loadFormDetails(this.config.data?.id);
           this.toggleBlockUI(false);
         },

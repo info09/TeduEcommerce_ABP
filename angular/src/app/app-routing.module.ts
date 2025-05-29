@@ -18,6 +18,11 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule),
   },
+  {
+    path: 'system',
+    loadChildren: () => import('./system/system.module').then(m => m.SystemModule),
+    component: AppLayoutComponent,
+  },
   // {
   //   path: 'identity',
   //   loadChildren: () => import('@abp/ng.identity').then(m => m.IdentityModule.forLazy()),

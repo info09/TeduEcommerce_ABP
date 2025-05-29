@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { ACCESS_TOKEN, REFRESH_TOKEN } from 'src/app/shared/constants/key.const';
+import { MessageConstants } from 'src/app/shared/constants/messages.const';
 import { LoginRequestDto } from 'src/app/shared/model/login-request.dto';
 import { LoginResponseDto } from 'src/app/shared/model/login-response.dto';
 import { AuthService } from 'src/app/shared/services/auth.service';
@@ -79,7 +80,7 @@ export class LoginComponent implements OnDestroy {
           this.router.navigate(['']);
         },
         error: ex => {
-          this.notificationService.showError('Đăng nhập không đúng.');
+          this.notificationService.showError(MessageConstants.LOGIN_ERR_MSG);
           this.toggleBlockUI(false);
         },
       });

@@ -66,6 +66,10 @@ export class AppMenuComponent implements OnInit {
           { label: 'Báo cáo doanh thu', icon: 'pi pi-fw pi-circle', routerLink: ['/report'] },
         ],
       },
+      {
+        label: 'Hệ thống',
+        items: [{ label: 'Quyền', icon: 'pi pi-fw pi-circle', routerLink: ['/system/role'] }],
+      },
     ];
   }
 }
