@@ -152,7 +152,7 @@ export class AttributeComponent implements OnInit, OnDestroy {
   }
 
   pageChanged(event: any): void {
-    this.skipCount = (event.page - 1) * this.maxResultCount;
+    this.skipCount = (event.pageCount - 1) * this.maxResultCount;
     this.maxResultCount = event.rows;
     this.loadData();
   }

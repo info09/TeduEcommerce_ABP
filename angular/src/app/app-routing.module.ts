@@ -10,6 +10,12 @@ const routes: Routes = [
     component: AppLayoutComponent,
   },
   {
+    path: 'product-category',
+    loadChildren: () =>
+      import('./product-category/product-category.module').then(m => m.ProductCategoryModule),
+    component: AppLayoutComponent,
+  },
+  {
     path: 'product',
     loadChildren: () => import('./product/product.module').then(m => m.ProductModule),
     component: AppLayoutComponent,
