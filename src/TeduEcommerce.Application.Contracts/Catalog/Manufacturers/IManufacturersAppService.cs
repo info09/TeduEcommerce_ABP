@@ -11,4 +11,5 @@ public interface IManufacturersAppService : ICrudAppService<ManufacturerDto, Gui
     Task<PagedResultDto<ManufacturerInListDto>> GetListFilterAsync(BaseListFilterDto input);
     Task<List<ManufacturerInListDto>> GetListAllAsync();
     Task DeleteMultiple(IEnumerable<Guid> ids);
+    Task<string> GetSuggestNewCodeAsync();
 }

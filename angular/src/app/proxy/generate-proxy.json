@@ -928,6 +928,14 @@
                   }
                 },
                 {
+                  "name": "GetSuggestNewCodeAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.String",
+                    "typeSimple": "string"
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [
                     {
@@ -1133,6 +1141,21 @@
               "returnValue": {
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<TeduEcommerce.Catalog.Manufacturers.ManufacturerInListDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<TeduEcommerce.Catalog.Manufacturers.ManufacturerInListDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "TeduEcommerce.Catalog.Manufacturers.IManufacturersAppService"
+            },
+            "GetSuggestNewCodeAsync": {
+              "uniqueName": "GetSuggestNewCodeAsync",
+              "name": "GetSuggestNewCodeAsync",
+              "httpMethod": "GET",
+              "url": "api/app/manufacturers/suggest-new-code",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.String",
+                "typeSimple": "string"
               },
               "allowAnonymous": false,
               "implementFrom": "TeduEcommerce.Catalog.Manufacturers.IManufacturersAppService"
@@ -1894,6 +1917,14 @@
                   }
                 },
                 {
+                  "name": "GetSuggestNewCodeAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "System.String",
+                    "typeSimple": "string"
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [
                     {
@@ -2099,6 +2130,21 @@
               "returnValue": {
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<TeduEcommerce.Catalog.ProductCategories.ProductCategoryInListDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<TeduEcommerce.Catalog.ProductCategories.ProductCategoryInListDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "TeduEcommerce.Catalog.ProductCategories.IProductCategoriesAppService"
+            },
+            "GetSuggestNewCodeAsync": {
+              "uniqueName": "GetSuggestNewCodeAsync",
+              "name": "GetSuggestNewCodeAsync",
+              "httpMethod": "GET",
+              "url": "api/app/product-categories/suggest-new-code",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "System.String",
+                "typeSimple": "string"
               },
               "allowAnonymous": false,
               "implementFrom": "TeduEcommerce.Catalog.ProductCategories.IProductCategoriesAppService"

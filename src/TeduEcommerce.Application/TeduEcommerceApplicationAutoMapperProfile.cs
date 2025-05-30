@@ -24,7 +24,7 @@ public class TeduEcommerceApplicationAutoMapperProfile : Profile
         //Product Category
         CreateMap<ProductCategory, ProductCategoryDto>();
         CreateMap<ProductCategory, ProductCategoryInListDto>();
-        CreateMap<CreateUpdateProductDto, ProductCategory>();
+        CreateMap<CreateUpdateProductCategoryDto, ProductCategory>();
 
         //Product
         CreateMap<Product, ProductDto>();

@@ -11,4 +11,10 @@ public static class TeduEcommerceConsts
 
     public const string ProductIdentitySettingId = "Product";
     public const string ProductIdentitySettingPrefix = "P";
+
+    public const string ProductCategoryIdentitySettingId = "ProductCategory";
+    public const string ProductCategoryIdentitySettingPrefix = "PC";
+
+    public const string ManufacturerIdentitySettingId = "Manufacturer";
+    public const string ManufacturerIdentitySettingPrefix = "M";
 }

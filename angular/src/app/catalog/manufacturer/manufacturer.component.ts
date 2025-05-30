@@ -1,24 +1,21 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {
-  ProductCategoriesService,
-  ProductCategoryInListDto,
-} from '@proxy/catalog/product-categories';
+import { ManufacturerInListDto, ManufacturersService } from '@proxy/catalog/manufacturers';
 import { DialogService } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
-import { ProductCategoryDetailComponent } from './product-category-detail.component';
 import { NotificationService } from 'src/app/shared/services/notification.service';
+import { ManufacturerDetailComponent } from './manufacturer-detail.component';
 import { MessageConstants } from 'src/app/shared/constants/messages.const';
 import { ConfirmationService } from 'primeng/api';
 
 @Component({
-  selector: 'app-product-category',
-  templateUrl: './product-category.component.html',
+  selector: 'app-manufacturer',
+  templateUrl: './manufacturer.component.html',
 })
-export class ProductCategoryComponent implements OnInit, OnDestroy {
+export class ManufacturerComponent implements OnInit, OnDestroy {
   private ngUnsubscribe = new Subject<void>();
   blockedPanel: boolean = false;
-  items: ProductCategoryInListDto[] = [];
-  selectedItems: ProductCategoryInListDto[] = [];
+  items: ManufacturerInListDto[] = [];
+  selectedItems: ManufacturerInListDto[] = [];
 
   // Paging variable
   public skipCount: number = 0;
@@ -34,42 +31,39 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
    *
    */
   constructor(
-    private productCategoryService: ProductCategoriesService,
+    private manufacturerService: ManufacturersService,
     private dialogService: DialogService,
     private notificationService: NotificationService,
     private confirmationService: ConfirmationService
   ) {}
-  ngOnDestroy(): void {
-    this.ngUnsubscribe.next();
-    this.ngUnsubscribe.complete();
-  }
-  ngOnInit(): void {
-    this.loadData();
-  }
 
   loadData() {
     this.toggleBlockUI(true);
-    this.productCategoryService
+    this.manufacturerService
       .getListFilter({
         keyword: this.keyword,
-        skipCount: this.skipCount,
         maxResultCount: this.maxResultCount,
+        skipCount: this.skipCount,
       })
       .pipe(takeUntil(this.ngUnsubscribe))
-      .subscribe({
-        next: res => {
-          this.items = res.items;
-          this.totalCount = res.totalCount;
-          this.toggleBlockUI(false);
-        },
-        error: err => {
-          this.toggleBlockUI(false);
-        },
+      .subscribe(result => {
+        this.items = result.items;
+        this.totalCount = result.totalCount;
+        this.toggleBlockUI(false);
       });
   }
 
+  ngOnInit() {
+    this.loadData();
+  }
+
+  ngOnDestroy() {
+    this.ngUnsubscribe.next();
+    this.ngUnsubscribe.complete();
+  }
+
   showAddModal() {
-    const ref = this.dialogService.open(ProductCategoryDetailComponent, {
+    const ref = this.dialogService.open(ManufacturerDetailComponent, {
       header: 'Thêm danh mục sản phẩm',
       width: '70%',
     });
@@ -89,7 +83,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
       return;
     }
     var id = this.selectedItems[0].id;
-    const ref = this.dialogService.open(ProductCategoryDetailComponent, {
+    const ref = this.dialogService.open(ManufacturerDetailComponent, {
       header: 'Sửa danh mục sản phẩm',
       width: '70%',
       data: {
@@ -127,7 +121,7 @@ export class ProductCategoryComponent implements OnInit, OnDestroy {
 
   deleteItemsConfirm(ids: string[]) {
     this.toggleBlockUI(true);
-    this.productCategoryService
+    this.manufacturerService
       .deleteMultipleByIds(ids)
       .pipe(takeUntil(this.ngUnsubscribe))
       .subscribe({

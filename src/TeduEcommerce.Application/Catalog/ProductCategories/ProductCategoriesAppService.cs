@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TeduEcommerce.ProductCategories;
+using TeduEcommerce.Products;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
@@ -18,8 +19,10 @@ public class ProductCategoriesAppService : CrudAppService<ProductCategory,
                                                             CreateUpdateProductCategoryDto,
                                                             CreateUpdateProductCategoryDto>, IProductCategoriesAppService
 {
-    public ProductCategoriesAppService(IRepository<ProductCategory, Guid> repository) : base(repository)
-    {       
+    private readonly ProductCategoryCodeGenerator _categoryCodeGenerator;
+    public ProductCategoriesAppService(IRepository<ProductCategory, Guid> repository, ProductCategoryCodeGenerator categoryCodeGenerator) : base(repository)
+    {
+        _categoryCodeGenerator = categoryCodeGenerator;
     }
 
     public async Task DeleteMultiple(IEnumerable<Guid> ids)
@@ -45,5 +48,10 @@ public class ProductCategoriesAppService : CrudAppService<ProductCategory,
         var data = await AsyncExecuter.ToListAsync(query.Skip(input.SkipCount).Take(input.MaxResultCount));
 
         return new PagedResultDto<ProductCategoryInListDto>(totalCount, ObjectMapper.Map<List<ProductCategory>, List<ProductCategoryInListDto>>(data));
+    }
+
+    public async Task<string> GetSuggestNewCodeAsync()
+    {
+        return await _categoryCodeGenerator.GenerateCodeAsync();
     }
 }

@@ -27,15 +27,24 @@ import { ProductCategoryComponent } from './product-category/product-category.co
 import { ReactiveFormsModule } from '@angular/forms';
 import { AttributeComponent } from './attribute/attribute.component';
 import { CommonModule } from '@angular/common';
+import { ProductCategoryDetailComponent } from './product-category/product-category-detail.component';
+import { ManufacturerComponent } from './manufacturer/manufacturer.component';
+import { ManufacturerDetailComponent } from './manufacturer/manufacturer-detail.component';
 
 @NgModule({
   declarations: [
     ProductComponent,
     ProductDetailComponent,
     ProductAttributeComponent,
-    ProductCategoryComponent,
+
     AttributeComponent,
     AttributeDetailComponent,
+
+    ProductCategoryComponent,
+    ProductCategoryDetailComponent,
+
+    ManufacturerComponent,
+    ManufacturerDetailComponent,
   ],
   imports: [
     SharedModule,
@@ -66,6 +75,10 @@ import { CommonModule } from '@angular/common';
     ProductAttributeComponent,
     AttributeDetailComponent,
     AttributeComponent,
+    ProductCategoryComponent,
+    ProductCategoryDetailComponent,
+    ManufacturerComponent,
+    ManufacturerDetailComponent,
   ],
 })
 export class CatalogModule {}

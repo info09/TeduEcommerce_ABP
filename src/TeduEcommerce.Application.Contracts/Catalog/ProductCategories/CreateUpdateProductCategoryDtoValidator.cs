@@ -14,7 +14,7 @@ public class CreateUpdateProductCategoryDtoValidator : AbstractValidator<CreateU
         RuleFor(i => i.Name).NotEmpty().MaximumLength(50);
         RuleFor(i => i.Code).NotEmpty().MaximumLength(50);
         RuleFor(i => i.Slug).NotEmpty().MaximumLength(50);
-        RuleFor(i => i.CoverPicture).NotEmpty().MaximumLength(250);
+        RuleFor(i => i.CoverPicture).MaximumLength(250);
         RuleFor(i => i.SeoMetaDescription).NotEmpty().MaximumLength(250);
     }
 }

@@ -12,4 +12,5 @@ public interface IProductCategoriesAppService : ICrudAppService<ProductCategoryD
     Task<PagedResultDto<ProductCategoryInListDto>> GetListFilterAsync(BaseListFilterDto input);
     Task<List<ProductCategoryInListDto>> GetListAllAsync();
     Task DeleteMultiple(IEnumerable<Guid> ids);
+    Task<string> GetSuggestNewCodeAsync();
 }

@@ -71,6 +71,15 @@ export class ProductCategoriesService {
     { apiName: this.apiName,...config });
   
 
+  getSuggestNewCode = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, string>({
+      method: 'GET',
+      responseType: 'text',
+      url: '/api/app/product-categories/suggest-new-code',
+    },
+    { apiName: this.apiName,...config });
+  
+
   update = (id: string, input: CreateUpdateProductCategoryDto, config?: Partial<Rest.Config>) =>
     this.restService.request<any, ProductCategoryDto>({
       method: 'PUT',

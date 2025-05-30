@@ -13,8 +13,10 @@ namespace TeduEcommerce.Catalog.Manufacturers;
 [Authorize]
 public class ManufacturersAppService : CrudAppService<Manufacturer, ManufacturerDto, Guid, PagedResultRequestDto, CreateUpdateManufactureDto, CreateUpdateManufactureDto>, IManufacturersAppService
 {
-    public ManufacturersAppService(IRepository<Manufacturer, Guid> repository) : base(repository)
+    private readonly ManufacturerCodeGenerator _manufacturerCodeGenerator;
+    public ManufacturersAppService(IRepository<Manufacturer, Guid> repository, ManufacturerCodeGenerator manufacturerCodeGenerator) : base(repository)
     {
+        _manufacturerCodeGenerator = manufacturerCodeGenerator;
     }
 
     public async Task DeleteMultiple(IEnumerable<Guid> ids)
@@ -39,5 +41,10 @@ public class ManufacturersAppService : CrudAppService<Manufacturer, Manufacturer
         var totalCount = await AsyncExecuter.LongCountAsync(query);
         var data = await AsyncExecuter.ToListAsync(query.Skip(input.SkipCount).Take(input.MaxResultCount));
         return new PagedResultDto<ManufacturerInListDto>(totalCount, ObjectMapper.Map<List<Manufacturer>, List<ManufacturerInListDto>>(data));
+    }
+
+    public async Task<string> GetSuggestNewCodeAsync()
+    {
+        return await _manufacturerCodeGenerator.GenerateCodeAsync();
     }
 }

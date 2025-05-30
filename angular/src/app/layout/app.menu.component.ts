@@ -28,7 +28,7 @@ export class AppMenuComponent implements OnInit {
           {
             label: 'Danh sách nhà sản xuất',
             icon: 'pi pi-fw pi-circle',
-            routerLink: ['/manufacturer'],
+            routerLink: ['/catalog/manufacturer'],
           },
         ],
       },
