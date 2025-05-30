@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
+using Volo.Abp.PermissionManagement;
 
 namespace TeduEcommerce.System.Roles;
 
@@ -10,5 +12,8 @@ public interface IRolesAppService : ICrudAppService<RoleDto, Guid, PagedResultRe
 {
     Task<PagedResultDto<RoleInListDto>> GetListFilterAsync(BaseListFilterDto input);
     Task<List<RoleInListDto>> GetListAllAsync();
-    Task DeleteMultipleAsync(Guid[] ids);
+    Task DeleteMultipleAsync(IEnumerable<Guid> ids);
+
+    Task<GetPermissionListResultDto> GetPermissionsAsync(string providerName, string providerKey);
+    Task UpdatePermissionsAsync(string providerName, string providerKey, UpdatePermissionsDto input);
 }
