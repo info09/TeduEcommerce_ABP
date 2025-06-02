@@ -23,9 +23,10 @@ import { CommonModule } from '@angular/common';
 import { SystemRoutingModule } from './system-routing.module';
 import { RoleComponent } from './role/role.component';
 import { RoleDetailComponent } from './role/role-detail.component';
+import { PermissionGrantComponent } from './role/permission-grant.component';
 
 @NgModule({
-  declarations: [RoleComponent, RoleDetailComponent],
+  declarations: [RoleComponent, RoleDetailComponent, PermissionGrantComponent],
   imports: [
     SharedModule,
     CommonModule,
@@ -50,6 +51,6 @@ import { RoleDetailComponent } from './role/role-detail.component';
     CalendarModule,
     ReactiveFormsModule,
   ],
-  entryComponents: [RoleDetailComponent],
+  entryComponents: [RoleDetailComponent, PermissionGrantComponent],
 })
 export class SystemModule {}

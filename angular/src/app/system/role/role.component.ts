@@ -1,12 +1,13 @@
 import { PagedResultDto } from '@abp/ng.core';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { RoleInListDto, RolesService } from '@proxy/system/roles';
+import { RoleDto, RoleInListDto, RolesService } from '@proxy/system/roles';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { Subject, takeUntil } from 'rxjs';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { RoleDetailComponent } from './role-detail.component';
 import { MessageConstants } from 'src/app/shared/constants/messages.const';
 import { ConfirmationService } from 'primeng/api';
+import { PermissionGrantComponent } from './permission-grant.component';
 
 @Component({
   selector: 'app-role',
@@ -44,7 +45,7 @@ export class RoleComponent implements OnInit, OnDestroy {
     this.loadData();
   }
 
-  loadData() {
+  loadData(selectionId = null) {
     this.toggleBlockUI(true);
     this.roleService
       .getListFilter({
@@ -137,6 +138,25 @@ export class RoleComponent implements OnInit, OnDestroy {
           this.toggleBlockUI(false);
         },
       });
+  }
+
+  showPermissionModal(id: string, name: string) {
+    const ref = this.dialogService.open(PermissionGrantComponent, {
+      data: {
+        id: id,
+        name: name,
+      },
+      header: name,
+      width: '70%',
+    });
+
+    ref.onClose.subscribe((data: RoleDto) => {
+      if (data) {
+        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+        this.selectedItems = [];
+        this.loadData(data.id);
+      }
+    });
   }
 
   pageChanged(event: any): void {
