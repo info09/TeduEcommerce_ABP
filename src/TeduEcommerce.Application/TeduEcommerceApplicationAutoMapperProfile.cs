@@ -9,6 +9,7 @@ using TeduEcommerce.ProductCategories;
 using TeduEcommerce.Products;
 using TeduEcommerce.Roles;
 using TeduEcommerce.System.Roles;
+using TeduEcommerce.System.Users;
 using Volo.Abp.Identity;
 
 namespace TeduEcommerce;
@@ -55,5 +56,9 @@ public class TeduEcommerceApplicationAutoMapperProfile : Profile
             :
             null));
         CreateMap<CreateUpdateRoleDto, IdentityRole>();
+
+        //User
+        CreateMap<IdentityUser, UserDto>();
+        CreateMap<IdentityUser, UserInListDto>();
     }
 }

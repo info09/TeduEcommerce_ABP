@@ -117,7 +117,9 @@ namespace TeduEcommerce.System.Roles
                 Groups = new List<PermissionGroupDto>()
             };
 
-            foreach (var group in PermissionDefinitionManager.GetGroupsAsync().Result.Where(x => x.Name.StartsWith("AbpIdentity") || x.Name.StartsWith("TeduEcomAdmin")))
+            var permissionGroup = await PermissionDefinitionManager.GetGroupsAsync();
+
+            foreach (var group in permissionGroup.Where(x => x.Name.StartsWith("AbpIdentity") || x.Name.StartsWith("TeduEcomAdmin")))
             {
                 var groupDto = CreatePermissionGroupDto(group);
 
