@@ -1,2 +1,3 @@
 import * as Roles from './roles';
-export { Roles };
+import * as Users from './users';
+export { Roles, Users };

@@ -84,7 +84,8 @@ public class UsersAppService : CrudAppService<IdentityUser, UserDto, Guid, Paged
             Name = input.Name,
             Surname = input.Surname
         };
-        var result = await _identityUserManager.CreateAsync(user);
+        user.SetPhoneNumber(input.PhoneNumber, true);
+        var result = await _identityUserManager.CreateAsync(user, input.Password);
         if (result.Succeeded)
         {
             return ObjectMapper.Map<IdentityUser, UserDto>(user);
