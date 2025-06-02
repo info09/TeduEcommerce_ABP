@@ -7,6 +7,7 @@ import { MessageConstants } from 'src/app/shared/constants/messages.const';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { UserDetailComponent } from './user-detail.component';
 import { RoleAssignComponent } from './role-assign.component';
+import { SetPasswordComponent } from './set-password.component';
 
 @Component({
   selector: 'app-user',
@@ -133,6 +134,20 @@ export class UserComponent implements OnInit, OnDestroy {
   assignRole(id) {
     const ref = this.dialogService.open(RoleAssignComponent, {
       header: 'Phân quyền',
+      width: '70%',
+      data: { id: id },
+    });
+
+    ref.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+      }
+    });
+  }
+
+  setPassword(id) {
+    const ref = this.dialogService.open(SetPasswordComponent, {
+      header: 'Đặt mật khẩu',
       width: '70%',
       data: { id: id },
     });

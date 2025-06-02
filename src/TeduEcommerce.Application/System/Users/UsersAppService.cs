@@ -157,4 +157,21 @@ public class UsersAppService : CrudAppService<IdentityUser, UserDto, Guid, Paged
             throw new UserFriendlyException(errors);
         }
     }
+
+    public async Task SetPasswordAsync(Guid userId, SetPasswordDto input)
+    {
+        var user = await _identityUserManager.FindByIdAsync(userId.ToString()) ?? throw new UserFriendlyException("Không tìm thấy người dùng");
+        var token = await _identityUserManager.GeneratePasswordResetTokenAsync(user);
+        var result = await _identityUserManager.ResetPasswordAsync(user, token, input.NewPassword);
+        if (!result.Succeeded)
+        {
+            List<IdentityError> errors = result.Errors.ToList();
+            string errorMessage = "";
+            foreach (var error in errors)
+            {
+                errorMessage += error.Description + "\n";
+            }
+            throw new UserFriendlyException(errorMessage);
+        }
+    }
 }

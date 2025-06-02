@@ -12,4 +12,5 @@ public interface IUsersAppService : ICrudAppService<UserDto, Guid, PagedResultRe
     Task<PagedResultDto<UserInListDto>> GetListFilterAsync(BaseListFilterDto input);
     Task<List<UserInListDto>> GetListAllAsync(string? filterKeyword);
     Task AssignRolesAsync(Guid userId, string[] roleNames);
+    Task SetPasswordAsync(Guid userId, SetPasswordDto input);
 }
