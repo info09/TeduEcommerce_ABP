@@ -134,4 +134,27 @@ public class UsersAppService : CrudAppService<IdentityUser, UserDto, Guid, Paged
         userDto.Roles = roles;
         return userDto;
     }
+
+    public async Task AssignRolesAsync(Guid userId, string[] roleNames)
+    {
+        var user = await _identityUserManager.FindByIdAsync(userId.ToString()) ?? throw new UserFriendlyException("Không tìm thấy người dùng");
+        var currentRoles = await _identityUserManager.GetRolesAsync(user);
+        var removedResult = await _identityUserManager.RemoveFromRolesAsync(user, currentRoles);
+        var addedResult = await _identityUserManager.AddToRolesAsync(user, roleNames);
+        if (!addedResult.Succeeded || !removedResult.Succeeded)
+        {
+            List<IdentityError> addedErrorList = addedResult.Errors.ToList();
+            List<IdentityError> removedErrorList = removedResult.Errors.ToList();
+            var errorList = new List<IdentityError>();
+            errorList.AddRange(addedErrorList);
+            errorList.AddRange(removedErrorList);
+            string errors = "";
+
+            foreach (var error in errorList)
+            {
+                errors += error.Description.ToString();
+            }
+            throw new UserFriendlyException(errors);
+        }
+    }
 }

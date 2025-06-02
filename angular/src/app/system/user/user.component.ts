@@ -6,6 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { MessageConstants } from 'src/app/shared/constants/messages.const';
 import { NotificationService } from 'src/app/shared/services/notification.service';
 import { UserDetailComponent } from './user-detail.component';
+import { RoleAssignComponent } from './role-assign.component';
 
 @Component({
   selector: 'app-user',
@@ -127,6 +128,20 @@ export class UserComponent implements OnInit, OnDestroy {
           this.toggleBlockUI(false);
         },
       });
+  }
+
+  assignRole(id) {
+    const ref = this.dialogService.open(RoleAssignComponent, {
+      header: 'Phân quyền',
+      width: '70%',
+      data: { id: id },
+    });
+
+    ref.onClose.subscribe((result: boolean) => {
+      if (result) {
+        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
+      }
+    });
   }
 
   pageChanged(event: any): void {

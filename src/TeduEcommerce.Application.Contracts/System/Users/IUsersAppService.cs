@@ -11,4 +11,5 @@ public interface IUsersAppService : ICrudAppService<UserDto, Guid, PagedResultRe
     Task DeleteMultipleAsync(IEnumerable<Guid> ids);
     Task<PagedResultDto<UserInListDto>> GetListFilterAsync(BaseListFilterDto input);
     Task<List<UserInListDto>> GetListAllAsync(string? filterKeyword);
+    Task AssignRolesAsync(Guid userId, string[] roleNames);
 }
