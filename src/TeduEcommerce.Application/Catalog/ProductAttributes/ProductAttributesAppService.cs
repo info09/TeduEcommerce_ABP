@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using TeduEcommerce.Permissions;
 using TeduEcommerce.ProductAttributes;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -9,18 +11,21 @@ using Volo.Abp.Domain.Repositories;
 
 namespace TeduEcommerce.Catalog.ProductAttributes;
 
+[Authorize(TeduEcommercePermissions.Attribute.Default, Policy = "AdminOnly")]
 public class ProductAttributesAppService : CrudAppService<ProductAttribute, ProductAttributeDto, Guid, PagedResultRequestDto, CreateUpdateProductAttributeDto, CreateUpdateProductAttributeDto>, IProductAttributesAppService
 {
     public ProductAttributesAppService(IRepository<ProductAttribute, Guid> repository) : base(repository)
     {
     }
 
+    [Authorize(TeduEcommercePermissions.Attribute.Delete)]
     public async Task DeleteMultipleAsync(IEnumerable<Guid> ids)
     {
         await Repository.DeleteManyAsync(ids);
         await UnitOfWorkManager.Current!.SaveChangesAsync(); // Ensure changes are saved
     }
 
+    [Authorize(TeduEcommercePermissions.Attribute.Default)]
     public async Task<List<ProductAttributeInListDto>> GetListAllAsync()
     {
         var query = await Repository.GetQueryableAsync();
@@ -29,6 +34,7 @@ public class ProductAttributesAppService : CrudAppService<ProductAttribute, Prod
         return ObjectMapper.Map<List<ProductAttribute>, List<ProductAttributeInListDto>>(data);
     }
 
+    [Authorize(TeduEcommercePermissions.Attribute.Default)]
     public async Task<PagedResultDto<ProductAttributeInListDto>> GetListFilterAsync(BaseListFilterDto input)
     {
         var query = await Repository.GetQueryableAsync();

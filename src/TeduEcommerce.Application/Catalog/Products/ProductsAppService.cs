@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using TeduEcommerce.Catalog.Products.Attributes;
+using TeduEcommerce.Permissions;
 using TeduEcommerce.ProductAttributes;
 using TeduEcommerce.ProductCategories;
 using TeduEcommerce.Products;
@@ -16,7 +17,7 @@ using Volo.Abp.Domain.Repositories;
 
 namespace TeduEcommerce.Catalog.Products;
 
-[Authorize]
+[Authorize(TeduEcommercePermissions.Product.Default, Policy = "AdminOnly")]
 public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, PagedResultRequestDto, CreateUpdateProductDto, CreateUpdateProductDto>, IProductsAppService
 {
     private readonly ProductManager _productManager;
@@ -43,14 +44,22 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         _productAttributeIntRepository = productAttributeIntRepository;
         _productAttributeVarcharRepository = productAttributeVarcharRepository;
         _productAttributeTextRepository = productAttributeTextRepository;
+
+        GetPolicyName = TeduEcommercePermissions.Product.Default;
+        GetListPolicyName = TeduEcommercePermissions.Product.Default;
+        CreatePolicyName = TeduEcommercePermissions.Product.Create;
+        UpdatePolicyName = TeduEcommercePermissions.Product.Update;
+        DeletePolicyName = TeduEcommercePermissions.Product.Delete;
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Delete)]
     public async Task DeleteMultiple(IEnumerable<Guid> ids)
     {
         await Repository.DeleteManyAsync(ids);
         await UnitOfWorkManager.Current!.SaveChangesAsync(); // Ensure changes are saved
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Default)]
     public async Task<List<ProductInListDto>> GetListAllAsync()
     {
         var query = await Repository.GetQueryableAsync();
@@ -59,6 +68,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         return ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data);
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Default)]
     public async Task<PagedResultDto<ProductInListDto>> GetListFilterAsync(ProductListFilterDto input)
     {
         var query = await Repository.GetQueryableAsync();
@@ -70,6 +80,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         return new PagedResultDto<ProductInListDto>(totalCount, ObjectMapper.Map<List<Product>, List<ProductInListDto>>(data));
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Create)]
     public override async Task<ProductDto> CreateAsync(CreateUpdateProductDto input)
     {
         var product = await _productManager.CreateAsync(input.ManufacturerId, input.Name, input.Code, input.Slug,
@@ -77,7 +88,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
             input.CategoryId, input.SeoMetaDescription, input.Description,
             input.SellPrice);
 
-        if(input.ThumbnailPictureContent != null && input.ThumbnailPictureContent.Length > 0)
+        if (input.ThumbnailPictureContent != null && input.ThumbnailPictureContent.Length > 0)
         {
             await SaveThumbnailPictureAsync(input.ThumbnailPictureName, input.ThumbnailPictureContent);
             product.ThumbnailPicture = input.ThumbnailPictureName;
@@ -88,6 +99,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         return ObjectMapper.Map<Product, ProductDto>(result);
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Update)]
     public override async Task<ProductDto> UpdateAsync(Guid id, CreateUpdateProductDto input)
     {
         var product = await Repository.GetAsync(id) ?? throw new Exception($"Product with id '{id}' not found.");
@@ -101,7 +113,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         product.SortOrder = input.SortOrder;
         product.Visibility = input.Visibility;
         product.IsActive = input.IsActive;
-        
+
         product.SeoMetaDescription = input.SeoMetaDescription;
         product.Description = input.Description;
         if (input.ThumbnailPictureContent != null && input.ThumbnailPictureContent.Length > 0)
@@ -112,14 +124,14 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         }
         product.SellPrice = input.SellPrice;
 
-        if(product.CategoryId != input.CategoryId)
+        if (product.CategoryId != input.CategoryId)
         {
             product.CategoryId = input.CategoryId;
             var category = await _productCategoryRepository.GetAsync(input.CategoryId);
             product.CategoryName = category?.Name;
             product.CategorySlug = category?.Slug;
         }
-        
+
 
         var result = await Repository.UpdateAsync(product, autoSave: true);
         return ObjectMapper.Map<Product, ProductDto>(result);
@@ -133,6 +145,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         await _fileContainer.SaveAsync(fileName, bytes, overrideExisting: true);
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Default)]
     public async Task<string?> GetThumbnailImageAsync(string fileName)
     {
         if (string.IsNullOrEmpty(fileName))
@@ -147,11 +160,13 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         return result;
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Default)]
     public async Task<string> GetSuggestNewCodeAsync()
     {
         return await _productCodeGenerator.GenerateCodeAsync();
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Update)]
     public async Task<ProductAttributeValueDto> AddProductAttributeAsync(AddUpdateProductAttributeDto input)
     {
         var product = await Repository.GetAsync(input.ProductId);
@@ -221,6 +236,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         };
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Update)]
     public async Task RemoveProductAttributeAsync(Guid attributeId, Guid id)
     {
         var attribute = await _productAttributeRepository.GetAsync(x => x.Id == attributeId);
@@ -273,6 +289,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         await UnitOfWorkManager.Current.SaveChangesAsync();
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Default)]
     public async Task<List<ProductAttributeValueDto>> GetListProductAttributeAllAsync(Guid productId)
     {
         var attributeQuery = await _productAttributeRepository.GetQueryableAsync();
@@ -325,6 +342,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         return await AsyncExecuter.ToListAsync(query);
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Default)]
     public async Task<PagedResultDto<ProductAttributeValueDto>> GetListProductAttributesAsync(ProductAttributeListFilterDto input)
     {
         var attributeQuery = await _productAttributeRepository.GetQueryableAsync();
@@ -383,6 +401,7 @@ public class ProductsAppService : CrudAppService<Product, ProductDto, Guid, Page
         return new PagedResultDto<ProductAttributeValueDto>(totalCount, data);
     }
 
+    [Authorize(TeduEcommercePermissions.Product.Update)]
     public async Task<ProductAttributeValueDto> UpdateProductAttributeAsync(Guid id, AddUpdateProductAttributeDto input)
     {
         var product = await Repository.GetAsync(input.ProductId);

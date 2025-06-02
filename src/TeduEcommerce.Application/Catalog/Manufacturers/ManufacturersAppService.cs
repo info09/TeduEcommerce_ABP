@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TeduEcommerce.Manufacturers;
+using TeduEcommerce.Permissions;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Repositories;
 
 namespace TeduEcommerce.Catalog.Manufacturers;
 
-[Authorize]
+[Authorize(TeduEcommercePermissions.Manufacturer.Default, Policy = "AdminOnly")]
 public class ManufacturersAppService : CrudAppService<Manufacturer, ManufacturerDto, Guid, PagedResultRequestDto, CreateUpdateManufactureDto, CreateUpdateManufactureDto>, IManufacturersAppService
 {
     private readonly ManufacturerCodeGenerator _manufacturerCodeGenerator;
@@ -19,12 +20,14 @@ public class ManufacturersAppService : CrudAppService<Manufacturer, Manufacturer
         _manufacturerCodeGenerator = manufacturerCodeGenerator;
     }
 
+    [Authorize(TeduEcommercePermissions.Manufacturer.Delete)]
     public async Task DeleteMultiple(IEnumerable<Guid> ids)
     {
         await Repository.DeleteManyAsync(ids);
         await UnitOfWorkManager.Current!.SaveChangesAsync(); // Ensure changes are saved
     }
 
+    [Authorize(TeduEcommercePermissions.Manufacturer.Default)]
     public async Task<List<ManufacturerInListDto>> GetListAllAsync()
     {
         var query = await Repository.GetQueryableAsync();
@@ -33,6 +36,7 @@ public class ManufacturersAppService : CrudAppService<Manufacturer, Manufacturer
         return ObjectMapper.Map<List<Manufacturer>, List<ManufacturerInListDto>>(data);
     }
 
+    [Authorize(TeduEcommercePermissions.Manufacturer.Default)]
     public async Task<PagedResultDto<ManufacturerInListDto>> GetListFilterAsync(BaseListFilterDto input)
     {
         var query = await Repository.GetQueryableAsync();
@@ -43,6 +47,7 @@ public class ManufacturersAppService : CrudAppService<Manufacturer, Manufacturer
         return new PagedResultDto<ManufacturerInListDto>(totalCount, ObjectMapper.Map<List<Manufacturer>, List<ManufacturerInListDto>>(data));
     }
 
+    [Authorize(TeduEcommercePermissions.Manufacturer.Default)]
     public async Task<string> GetSuggestNewCodeAsync()
     {
         return await _manufacturerCodeGenerator.GenerateCodeAsync();

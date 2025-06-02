@@ -24,11 +24,13 @@ export class AppMenuComponent implements OnInit {
             label: 'Danh sách loại sản phẩm',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/catalog/product-category'],
+            permission: 'TeduEcomAdminCatalog.ProductCategory',
           },
           {
             label: 'Danh sách nhà sản xuất',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/catalog/manufacturer'],
+            permission: 'TeduEcomAdminCatalog.Manufacturer',
           },
         ],
       },
@@ -39,11 +41,13 @@ export class AppMenuComponent implements OnInit {
             label: 'Danh sách sản phẩm',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/catalog/product'],
+            permission: 'TeduEcomAdminCatalog.Product',
           },
           {
             label: 'Danh sách thuộc tính',
             icon: 'pi pi-fw pi-circle',
             routerLink: ['/catalog/attribute'],
+            permission: 'TeduEcomAdminCatalog.Attribute',
           },
         ],
       },
@@ -69,9 +73,20 @@ export class AppMenuComponent implements OnInit {
       {
         label: 'Hệ thống',
         items: [
-          { label: 'Quyền', icon: 'pi pi-fw pi-circle', routerLink: ['/system/role'] },
-          { label: 'Người dùng', icon: 'pi pi-fw pi-circle', routerLink: ['/system/user'] },
+          {
+            label: 'Quyền',
+            icon: 'pi pi-fw pi-circle',
+            routerLink: ['/system/role'],
+            permission: 'AbpIdentity.Roles',
+          },
+          {
+            label: 'Người dùng',
+            icon: 'pi pi-fw pi-circle',
+            routerLink: ['/system/user'],
+            permission: 'AbpIdentity.Users',
+          },
         ],
+        //permission: 'AbpIdentity.Users',
       },
     ];
   }

@@ -147,6 +147,11 @@ public class TeduEcommerceHttpApiHostModule : AbpModule
         {
             options.IsDynamicClaimsEnabled = true;
         });
+
+        context.Services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+        });
     }
 
     private void ConfigureUrls(IConfiguration configuration)
