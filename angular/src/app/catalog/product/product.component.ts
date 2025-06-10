@@ -165,7 +165,7 @@ export class ProductComponent implements OnInit, OnDestroy {
         },
         error: () => {
           this.toggleBlockUI(false);
-          this.notificationService.showError('Xóa sản phẩm không thành công');
+          this.notificationService.showError(MessageConstants.DELETED_ERR_MSG);
         },
       });
   }
@@ -182,7 +182,7 @@ export class ProductComponent implements OnInit, OnDestroy {
     ref.onClose.subscribe((data: ProductDto) => {
       if (data) {
         this.loadData();
-        this.notificationService.showSuccess('Cập nhật thuộc tính sản phẩm thành công');
+        this.notificationService.showSuccess(MessageConstants.UPDATED_OK_MSG);
         this.selectedItems = [];
       }
     });
